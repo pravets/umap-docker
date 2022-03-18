@@ -1,8 +1,18 @@
 version: '3'
 services:
+  db:
+    build: db/
+    container_name: umap_db
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    env_file: .env
+    restart: unless-stopped
   srv:
     build: srv/
-#    volumes:
-#     - ./data/config:/etc/umap/
+    container_name: umap_srv
+    env_file: .env
+    restart: unless-stopped
+    depends_on:
+     - db
     ports:
      - 8000:8000
